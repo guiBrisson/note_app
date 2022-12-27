@@ -28,6 +28,11 @@ fun NoteScreen(
             .padding(horizontal = 26.dp, vertical = 20.dp)
         ) {
             TopComponent(onBack = onBack, onEdit = { /*todo*/ })
+            NoteTitleTextField(
+                modifier = Modifier.padding(vertical = 20.dp),
+                onSearchInputChange = { /*todo*/ }
+            )
+            NoteContentTextField(onSearchInputChange = { /*todo*/ })
         }
     }
 }
