@@ -37,7 +37,9 @@ fun NoteNavGraph(
             route = NoteDestinations.NOTE_ROUTE,
             arguments = listOf(
                 navArgument(NOTE_ID_ARG) {
-                    type = NavType.StringType ; defaultValue = ""
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
                 }
             )
         ) {

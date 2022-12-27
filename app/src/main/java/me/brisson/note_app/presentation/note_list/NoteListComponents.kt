@@ -113,7 +113,7 @@ fun FABAddNote(
 ) {
     Surface(
         modifier = modifier.size(60.dp),
-        color = MaterialTheme.colorScheme.background,
+        color = MaterialTheme.colorScheme.surface,
         shadowElevation = 4.dp,
         shape = CircleShape
     ) {
