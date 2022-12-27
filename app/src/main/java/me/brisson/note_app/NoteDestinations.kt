@@ -16,12 +16,12 @@ object NoteDestinationArgs {
 
 object NoteDestinations {
     const val NOTE_LIST_ROUTE = NOTE_LIST_SCREEN
-    const val NOTE_ROUTE = "$NOTE_SCREEN/{$NOTE_ID_ARG}"
+    const val NOTE_ROUTE = "$NOTE_SCREEN/?{$NOTE_ID_ARG}"
 }
 
 class NoteNavigationActions(private val navController: NavHostController) {
-    fun navigateToNote(noteId: String) {
-        navController.navigate(route = "$NOTE_SCREEN/$noteId") {
+    fun navigateToNote(noteId: String?) {
+        navController.navigate("$NOTE_SCREEN/?$noteId") {
             launchSingleTop = true
             restoreState = true
         }

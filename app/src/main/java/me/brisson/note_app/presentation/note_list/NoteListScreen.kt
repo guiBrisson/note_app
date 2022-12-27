@@ -23,7 +23,7 @@ import me.brisson.note_app.ui.theme.NoteAppTheme
 @Composable
 fun NoteListScreen(
     modifier: Modifier = Modifier,
-    onNote: (noteId: String) -> Unit,
+    onNote: (noteId: String?) -> Unit,
     viewModel: NoteListViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -68,7 +68,7 @@ fun NoteListScreen(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .padding(30.dp),
-            onClick = { onNote("") }
+            onClick = { onNote(null) }
         )
     }
 
