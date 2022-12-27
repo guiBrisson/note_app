@@ -8,12 +8,10 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
-import androidx.compose.material.icons.rounded.Clear
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -21,18 +19,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import me.brisson.note_app.domain.model.Note
+import me.brisson.note_app.ui.components.CustomTextField
 import me.brisson.note_app.ui.theme.NoteAppTheme
 import me.brisson.note_app.ui.theme.montserrat
 import me.brisson.note_app.utils.random
@@ -50,7 +46,6 @@ fun TitleAndSearch(
         if (scope) {
             val focusManager = LocalFocusManager.current
             val focusRequester = FocusRequester()
-            var input by remember { mutableStateOf(TextFieldValue("")) }
             val textStyle = TextStyle(
                 fontFamily = montserrat,
                 fontSize = 14.sp,
@@ -62,46 +57,16 @@ fun TitleAndSearch(
                 focusRequester.requestFocus()
             }
 
-            BasicTextField(
+            CustomTextField(
                 modifier = modifier
                     .clip(shape = RoundedCornerShape(4.dp))
-                    .fillMaxWidth()
-                    .height(40.dp)
-                    .focusRequester(focusRequester),
-                value = input,
-                onValueChange = {
-                    input = it
-                    onSearchInputChange(it.text)
-                },
-                singleLine = true,
-                textStyle = textStyle,
+                    .height(45.dp),
+                focusRequester = focusRequester,
+                inputTextStyle = textStyle,
+                onSearchInputChange = { onSearchInputChange(it) },
+                onClearInput = { showSearch = false },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                 keyboardActions = KeyboardActions(onSearch = { focusManager.clearFocus() }),
-                cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurface),
-                decorationBox = { innerTextField ->
-                    Row(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(horizontal = 15.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        innerTextField()
-                        Box(
-                            modifier = Modifier
-                                .padding(5.dp)
-                                .clickable { showSearch = false }
-                        ) {
-
-                            Icon(
-                                modifier = Modifier.align(Alignment.Center),
-                                imageVector = Icons.Rounded.Clear,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.onSurface
-                            )
-                        }
-                    }
-                }
             )
         } else {
             Row(
