@@ -28,15 +28,18 @@ import me.brisson.note_app.ui.theme.montserrat
 @Composable
 fun CustomTextField(
     modifier: Modifier = Modifier,
+    text: String = "",
     focusRequester: FocusRequester = FocusRequester(),
     label: @Composable (() -> Unit)? = null,
+    enabled: Boolean = true,
+    readOnly: Boolean = false,
     onSearchInputChange: (input: String) -> Unit,
     onClearInput: (() -> Unit)? = null,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     inputTextStyle: TextStyle = TextStyle.Default
 ) {
-    var input by remember { mutableStateOf(TextFieldValue("")) }
+    var input by remember { mutableStateOf(TextFieldValue(text)) }
 
     BasicTextField(
         modifier = modifier
@@ -49,6 +52,8 @@ fun CustomTextField(
             onSearchInputChange(it.text)
         },
         singleLine = true,
+        readOnly = readOnly,
+        enabled = enabled,
         textStyle = inputTextStyle,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
@@ -59,7 +64,7 @@ fun CustomTextField(
                     .height(IntrinsicSize.Max)
                     .fillMaxWidth()
                     .padding(horizontal = 0.dp),
-                verticalAlignment = Alignment.CenterVertically,
+                verticalAlignment = Alignment.Top,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Box(

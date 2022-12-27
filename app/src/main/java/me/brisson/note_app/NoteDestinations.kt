@@ -21,7 +21,8 @@ object NoteDestinations {
 
 class NoteNavigationActions(private val navController: NavHostController) {
     fun navigateToNote(noteId: String?) {
-        navController.navigate("$NOTE_SCREEN/?$noteId") {
+        val route = "$NOTE_SCREEN/?${noteId ?: ""}"
+        navController.navigate(route) {
             launchSingleTop = true
             restoreState = true
         }
