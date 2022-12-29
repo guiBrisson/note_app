@@ -63,6 +63,7 @@ fun TitleAndSearch(
                     .height(45.dp),
                 focusRequester = focusRequester,
                 inputTextStyle = textStyle,
+                singleLine = true,
                 onSearchInputChange = { onSearchInputChange(it) },
                 onClearInput = { showSearch = false },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),

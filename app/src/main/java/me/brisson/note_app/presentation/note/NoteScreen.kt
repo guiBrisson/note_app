@@ -2,10 +2,7 @@ package me.brisson.note_app.presentation.note
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -21,6 +18,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import me.brisson.note_app.ui.theme.NoteAppTheme
 import me.brisson.note_app.ui.theme.montserrat
+import java.text.SimpleDateFormat
+import java.util.*
 
 @ExperimentalAnimationApi
 @Composable
@@ -30,10 +29,12 @@ fun NoteScreen(
     viewModel: NoteViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
     Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 26.dp, vertical = 20.dp)
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 26.dp, vertical = 20.dp)
         ) {
             TopComponent(
                 onBack = onBack,
@@ -41,10 +42,31 @@ fun NoteScreen(
                 onTrailing = { viewModel.changeMode(!uiState.editMode) }
             )
 
+            uiState.title.let {
+                if (it.isNullOrEmpty()) {
+                    NoteTitleTextField(
+                        modifier = Modifier.padding(top = 30.dp),
+                        readOnly = !uiState.editMode,
+                        onSearchInputChange = { input -> viewModel.updateNoteTitle(input) }
+                    )
+                } else {
+                    NoteTitleTextField(
+                        modifier = Modifier.padding(top = 30.dp),
+                        input = uiState.title,
+                        readOnly = !uiState.editMode,
+                        onSearchInputChange = { input -> viewModel.updateNoteTitle(input) }
+                    )
+                }
+            }
+
+            Spacer(modifier = Modifier.padding(top = 15.dp))
+
             uiState.note?.let { note ->
-                AnimatedVisibility(visible = uiState.editMode) {
+                AnimatedVisibility(visible = !uiState.editMode) {
+                    val formattedDate =
+                        SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(note.createdAt)
                     Text(
-                        text = note.createdAt.toString(), // todo: format date
+                        text = formattedDate,
                         style = TextStyle(
                             fontFamily = montserrat,
                             color = Color.Gray,
@@ -54,17 +76,22 @@ fun NoteScreen(
                 }
             }
 
-            NoteTitleTextField(
-                modifier = Modifier.padding(vertical = 30.dp),
-                input = uiState.note?.title,
-                readOnly = !uiState.editMode,
-                onSearchInputChange = { /*todo*/ }
-            )
-            NoteContentTextField(
-                input = uiState.note?.content,
-                readOnly = !uiState.editMode,
-                onSearchInputChange = { /*todo*/ }
-            )
+            Spacer(modifier = Modifier.padding(top = 15.dp))
+
+            uiState.content.let {
+                if (it.isNullOrEmpty()) {
+                    NoteContentTextField(
+                        readOnly = !uiState.editMode,
+                        onSearchInputChange = { input -> viewModel.updateNoteContent(input) }
+                    )
+                } else {
+                    NoteContentTextField(
+                        input = uiState.content,
+                        readOnly = !uiState.editMode,
+                        onSearchInputChange = { input -> viewModel.updateNoteContent(input) }
+                    )
+                }
+            }
         }
     }
 }
