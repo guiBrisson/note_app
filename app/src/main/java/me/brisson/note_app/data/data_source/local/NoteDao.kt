@@ -3,6 +3,7 @@ package me.brisson.note_app.data.data_source.local
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import me.brisson.note_app.data.data_source.local.entity.NoteEntity
 
@@ -18,9 +19,9 @@ interface NoteDao {
     @Query("SELECT * FROM note WHERE title IN (:title)")
     suspend fun findByTitle(title: String): List<NoteEntity>
 
-    @Insert
-    fun insertAll(vararg notes: NoteEntity)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(vararg notes: NoteEntity)
 
     @Delete
-    fun delete(note: NoteEntity)
+    suspend fun delete(note: NoteEntity)
 }

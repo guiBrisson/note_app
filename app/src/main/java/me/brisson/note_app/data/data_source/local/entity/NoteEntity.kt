@@ -10,7 +10,7 @@ import java.util.*
 data class NoteEntity(
     @PrimaryKey val uid: String = UUID.randomUUID().toString(),
     val title: String,
-    @ColumnInfo(name = "created_at") val createdAt: Long,
+    @ColumnInfo(name = "created_at") val createdAt: Long = Calendar.getInstance().timeInMillis,
     val content: String
 )
 
@@ -29,6 +29,7 @@ fun List<NoteEntity>.asNotes() : List<Note> {
 
 fun Note.asEntity() : NoteEntity {
     return NoteEntity(
+        uid = id,
         title = title,
         createdAt = createdAt,
         content = content

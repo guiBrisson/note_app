@@ -14,6 +14,7 @@ import me.brisson.note_app.data.repository.NoteRepositoryImpl
 import me.brisson.note_app.domain.data_source.NoteDataSource
 import me.brisson.note_app.domain.repository.NoteRepository
 import javax.inject.Qualifier
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -26,27 +27,33 @@ object NoteModule {
     annotation class NoteRemoteDataSource
 
     @Provides
-    fun providesNoteDatabase(@ApplicationContext app: Context) : NoteDatabase =
-        Room.databaseBuilder(
+    @Singleton
+    fun providesNoteDatabase(@ApplicationContext app: Context) : NoteDatabase {
+        return Room.databaseBuilder(
             app,
             NoteDatabase::class.java,
             "note_database"
         ).build()
+    }
 
 
     @Provides
+    @Singleton
     fun providesNoteDao(db: NoteDatabase) : NoteDao {
         return db.noteDao()
     }
 
     @Provides
+    @Singleton
     @NoteLocalDataSource
     fun providesLocalNoteDataSource(noteDao: NoteDao) : NoteDataSource {
         return LocalNoteDataSource(noteDao)
     }
 
     @Provides
+    @Singleton
     fun providesNoteRepository(@NoteLocalDataSource localDataSource: NoteDataSource) : NoteRepository {
         return NoteRepositoryImpl(localDataSource)
     }
 }
+

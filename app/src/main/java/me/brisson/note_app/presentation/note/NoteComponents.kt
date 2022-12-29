@@ -86,6 +86,7 @@ fun NoteTitleTextField(
     val textStyle = TextStyle(
         fontFamily = montserrat,
         fontSize = 30.sp,
+        fontWeight = FontWeight.SemiBold,
         color = MaterialTheme.colorScheme.onBackground
     )
 
@@ -93,7 +94,7 @@ fun NoteTitleTextField(
 
     CustomTextField(
         modifier = modifier.heightIn(min = 50.dp),
-        text = input ?: "",
+        text = input,
         onSearchInputChange = { onSearchInputChange(it) },
         label = {
             Text(text = "Title", style = textStyle, color = Color.Gray)
@@ -121,7 +122,7 @@ fun NoteContentTextField(
 
     CustomTextField(
         modifier = modifier.fillMaxHeight(),
-        text = input ?: "",
+        text = input,
         onSearchInputChange = { onSearchInputChange(it) },
         label = {
             Text(text = "Type something...", style = textStyle, color = Color.Gray)
